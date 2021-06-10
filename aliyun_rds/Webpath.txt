@@ -1,1 +1,0 @@
-INNER = rm-uf6q7tv8ab1qj6736.mysql.rds.aliyuncs.com //阿里云数据库RDS版内网地址
