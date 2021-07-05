@@ -1,41 +1,49 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
 from configparser import ConfigParser
+from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 config = ConfigParser()
 config.read('config.ini')
 
-db_url = "mysql+pymysql://{username}:{password}@{inner_path}:{port}/users".format(
+db_url = "mysql+pymysql://{username}:{password}@{inner_path}:{port}/{dbname}".format(
     username=config.get('account', 'USERNAME'),
     password=config.get('account', 'PASSWORD'),
     inner_path=config.get('db_connect', 'INNER_PATH'),
-    port=config.get('db_connect', 'PORT')
+    port=config.get('db_connect', 'PORT'),
+    dbname=config.get('db_connect', 'INNER_PATH')
 )
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = db_url
-db = SQLAlchemy(app)
+con_engine = create_engine(db_url)
+Base = declarative_base()
+metadata = Base.metadata
+DBSession = sessionmaker(bind=con_engine)
+session = DBSession()
 
 
-class UserInfo(db.Model):
+class UserInfo(Base):
     __tablename__ = 'userinfo'
 
-    id = db.Column(db.Integer, primary_key=True)
-    authority = db.Column(db.Integer, nullable=False)
-    account = db.Column()
+    uid = Column(Integer, primary_key=True)
+    authority = Column(Integer, nullable=False)
+    account = Column(String)
+    password = Column(String)
+    ip = Column(String)
 
 
-class LoginRecord(db.Model):
-    __tablename__ = 'loginrecord'
+class LoginRecord(Base):
+    __tablename__ = 'login_record'
 
-    num = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    id = db.Column(db.Integer, db.ForeignKey('userinfo.id'))
-    iplist = db.Column(db.String)
+    lid = Column(Integer, primary_key=True, autoincrement=True)
+    uid = Column(Integer)
+    ip = Column(String)
+    time = Column(DateTime)
 
 
-class UseRecord(db.Model):
-    __tablename__ = 'loginrecord'
+class Update(Base):
+    __tablename__ = 'update'
 
-    num = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    id = db.Column(db.Integer, db.ForeignKey('userinfo.id'))
-    uselist = db.Column(db.String)
+    pid = Column(Integer, primary_key=True, autoincrement=True)
+    uid = Column(Integer)
+    time = Column(DateTime)
+    type = Column(String)
+    content = Column(String)
