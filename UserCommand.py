@@ -46,5 +46,27 @@ def loading():
     return json.dumps(resume)
 
 
+@server.route('/load_index', methods=['GET', 'POST'])
+# 推荐算法主函数
+def loading():
+    # 获取通过url请求传参的数据
+    page = request.values.get('page')
+
+    # 返回计算完成数据
+    resume = {'code': '500000', 'message': ''}
+    return json.dumps(resume)
+
+
+@server.route('/load_hotpoint', methods=['GET', 'POST'])
+# 推荐算法主函数
+def loading():
+    # 获取通过url请求传参的数据
+    page = request.values.get('page')
+
+    # 返回计算完成数据
+    resume = {'code': '500000', 'message': ''}
+    return json.dumps(resume)
+
+
 if __name__ == '__main__':
-    server.run(debug=True, port=8808, host='0.0.0.0')  # 指定端口、host,0.0.0.0代表不管几个网卡，任何ip都可以访问
+    server.run(debug=True, port=80, host='0.0.0.0')  # 指定端口、host,0.0.0.0代表不管几个网卡，任何ip都可以访问

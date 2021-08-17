@@ -18,3 +18,13 @@ Base = declarative_base()
 metadata = Base.metadata
 DBSession = sessionmaker(bind=con_engine)
 session = DBSession()
+
+
+class Project(Base):
+    __tablename__ = 'project'
+
+    id = Column(String)
+    filepath = Column(String)
+    change_time = Column(DateTime)  # 文件更改时间
+    author = Column(Integer)  # 作者id
+    author_name = Column(String)
