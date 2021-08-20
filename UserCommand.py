@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import json
 from aliyun_rds import *
+from ToolBox import *
 
 '''
 flask： web框架，通过flask提供的装饰器@server.route()将普通函数转换为服务
@@ -13,12 +14,11 @@ CORS(server, resources=r'/*')
 
 # @server.route()可以将普通函数转变为服务 登录接口的路径、请求方式
 @server.route('/login', methods=['GET', 'POST'])
-# 推荐算法主函数
 def login():
     # 获取通过url请求传参的数据
     ip = request.values.get('ip')
     if request.values.get('type') == 0:
-        username = 'tourist_' + ip.replace('.', '')
+        username = 'tourist_' + CharsetEncoding.random_str(5)
         password = ''
     else:
         username = request.values.get('username')
@@ -36,7 +36,6 @@ def login():
 
 
 @server.route('/loading', methods=['GET', 'POST'])
-# 推荐算法主函数
 def loading():
     # 获取通过url请求传参的数据
     page = request.values.get('page')
@@ -47,7 +46,6 @@ def loading():
 
 
 @server.route('/load_index', methods=['GET', 'POST'])
-# 推荐算法主函数
 def loading():
     # 获取通过url请求传参的数据
     page = request.values.get('page')
@@ -58,7 +56,6 @@ def loading():
 
 
 @server.route('/load_hotpoint', methods=['GET', 'POST'])
-# 推荐算法主函数
 def loading():
     # 获取通过url请求传参的数据
     page = request.values.get('page')
